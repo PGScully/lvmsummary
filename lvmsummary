@@ -4,6 +4,7 @@
 # <http://serverfault.com/questions/28592/getting-a-textual-overview-of-a-systems-lvm-configuration>
 #
 # Copyright 2009 Peter Scully <peter@peterscully.name>
+# Licence: Creative Commons Attribution-Share Alike <http://creativecommons.org/licenses/by-sa/3.0/>
 #
 vglist=`vgs --noheadings | awk '{print $1}' | sort`
 for vgname in $vglist
