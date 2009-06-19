@@ -1,0 +1,48 @@
+#! /bin/bash
+# Print a summary of the LVM vgs, pvs and lvs.
+# See the following link for the inspiration:
+# <http://serverfault.com/questions/28592/getting-a-textual-overview-of-a-systems-lvm-configuration>
+#
+# Copyright 2009 Peter Scully <peter@peterscully.name>
+#
+vglist=`vgs --noheadings | awk '{print $1}' | sort`
+for vgname in $vglist
+do
+    echo "Volume Group \"$vgname\""
+    echo "===================="
+    echo "Physical Volumes:"
+
+    pvlist=`pvs --noheadings | grep $vgname | awk '{print $1}' | sort`
+    for pvname in $pvlist
+    do
+	pvdata=(`pvs --noheadings --options pv_name,pv_size,pv_free $pvname`)
+	name=${pvdata[0]}
+	size=${pvdata[1]}
+	free=${pvdata[2]}
+	echo "- $name ($size, $free Free)"
+    done
+
+    echo ""
+    echo "Logical Volumes:"
+    lvlist=`lvs --noheadings | grep $vgname | awk '{print $1}' | sort`
+    for lvname in $lvlist
+    do
+	lvdata=(`lvs --noheadings --units G --options lv_name,lv_size $vgname | grep $lvname`)
+	name=${lvdata[0]}
+	size=${lvdata[1]}
+	lvdata=(`grep /dev/mapper/${vgname}-${lvname} /etc/fstab`)
+	fstype=${lvdata[2]}
+	mountpoint=${lvdata[1]}
+	if [ "$fstype" = "swap" ] 
+	then
+	    echo "- $name ($fstype, $size)"
+	else
+	    lvdata=(`df -h -P $mountpoint | tail -1`)
+	    fssize=${lvdata[1]}
+	    fsfree=${lvdata[3]}
+	    echo "- $name ($fstype mounted on $mountpoint, $fssize, $fsfree Free)"
+	fi
+    done
+
+    echo ""
+done
