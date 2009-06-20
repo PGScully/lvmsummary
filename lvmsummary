@@ -16,11 +16,11 @@ do
     pvlist=`pvs --noheadings | grep $vgname | awk '{print $1}' | sort`
     for pvname in $pvlist
     do
-	pvdata=(`pvs --noheadings --options pv_name,pv_size,pv_free $pvname`)
-	name=${pvdata[0]}
-	size=${pvdata[1]}
-	free=${pvdata[2]}
-	echo "- $name ($size, $free Free)"
+        pvdata=(`pvs --noheadings --options pv_name,pv_size,pv_free $pvname`)
+        name=${pvdata[0]}
+        size=${pvdata[1]}
+        free=${pvdata[2]}
+        echo "- $name ($size, $free Free)"
     done
 
     echo ""
@@ -28,23 +28,23 @@ do
     lvlist=`lvs --noheadings | grep $vgname | awk '{print $1}' | sort`
     for lvname in $lvlist
     do
-	lvdata=(`lvs --noheadings --units G --options lv_name,lv_size $vgname | grep $lvname`)
-	name=${lvdata[0]}
-	size=${lvdata[1]}
-	lvdata=(`grep /dev/mapper/${vgname}-${lvname} /etc/fstab`)
-	fstype=${lvdata[2]}
-	mountpoint=${lvdata[1]}
-	if [ "$fstype" = "swap" ] 
-	then
-	    echo "- $name ($fstype, $size)"
-	else
-	    lvdata=(`df -h -P $mountpoint | tail -1`)
-	    fssize=${lvdata[1]}
-	    fsfree=${lvdata[3]}
-	    echo "- $name ($fstype mounted on $mountpoint, $fssize, $fsfree Free)"
-	fi
-	pvlist=(`lvdisplay -m $vgname/$lvname | grep "Physical volume" | sed -e 's/    Physical volume\t//' | sort -u`)
-	echo "    PVs: ${pvlist[*]}"
+        lvdata=(`lvs --noheadings --units G --options lv_name,lv_size $vgname | grep $lvname`)
+        name=${lvdata[0]}
+        size=${lvdata[1]}
+        lvdata=(`grep /dev/mapper/${vgname}-${lvname} /etc/fstab`)
+        fstype=${lvdata[2]}
+        mountpoint=${lvdata[1]}
+        if [ "$fstype" = "swap" ] 
+        then
+            echo "- $name ($fstype, $size)"
+        else
+            lvdata=(`df -h -P $mountpoint | tail -1`)
+            fssize=${lvdata[1]}
+            fsfree=${lvdata[3]}
+            echo "- $name ($fstype mounted on $mountpoint, $fssize, $fsfree Free)"
+        fi
+        pvlist=(`lvdisplay -m $vgname/$lvname | grep "Physical volume" | sed -e 's/    Physical volume\t//' | sort -u`)
+        echo "    PVs: ${pvlist[*]}"
     done
 
     echo ""
