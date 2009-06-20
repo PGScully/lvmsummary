@@ -43,6 +43,8 @@ do
 	    fsfree=${lvdata[3]}
 	    echo "- $name ($fstype mounted on $mountpoint, $fssize, $fsfree Free)"
 	fi
+	pvlist=(`lvdisplay -m $vgname/$lvname | grep "Physical volume" | sed -e 's/    Physical volume\t//' | sort -u`)
+	echo "    PVs: ${pvlist[*]}"
     done
 
     echo ""
