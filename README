@@ -1,3 +1,4 @@
+
 lvmsummary
 ==========
 
@@ -9,3 +10,14 @@ Copyright 2009 Peter Scully <peter@peterscully.name>
 
 Licence: Creative Commons Attribution-Share Alike <http://creativecommons.org/licenses/by-sa/3.0/>
 
+
+Further Work:
+=============
+
+Some error handling would be nice.  e.g. LVs that are mounted but do not appear in /etc/fstab.
+
+Command line arguements.  e.g. -v vgname to only show that VG.
+
+Refactor it; some things should be made into subroutines.
+
+Make it more efficient.
