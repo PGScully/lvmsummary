@@ -31,7 +31,7 @@ do
         lvdata=(`lvs --noheadings --units G --options lv_name,lv_size $vgname | grep $lvname`)
         name=${lvdata[0]}
         size=${lvdata[1]}
-        lvdata=(`grep /dev/mapper/${vgname}-${lvname} /etc/fstab`)
+        lvdata=(`grep -e /dev/mapper/${vgname}-${lvname} -e /dev/${vgname}/${lvname} /etc/fstab`)
         fstype=${lvdata[2]}
         mountpoint=${lvdata[1]}
         if [ "$fstype" = "swap" ] 

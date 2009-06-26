@@ -1,4 +1,3 @@
-
 lvmsummary
 ==========
 
@@ -13,6 +12,10 @@ Licence: Creative Commons Attribution-Share Alike <http://creativecommons.org/li
 
 Further Work:
 =============
+
+I'm sure there are plenty of edge and corner cases not handled.
+
+Doesn't handle striped LVs (created with --stripe).
 
 Some error handling would be nice.  e.g. LVs that are mounted but do not appear in /etc/fstab.
 
