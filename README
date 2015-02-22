@@ -15,6 +15,8 @@ Further Work:
 
 I'm sure there are plenty of edge and corner cases not handled.
 
+Needs to test that lvm is installed.
+
 Doesn't handle striped LVs (created with --stripe).
 
 Some error handling would be nice.  e.g. LVs that are mounted but do not appear in /etc/fstab.
